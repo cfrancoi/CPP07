@@ -10,7 +10,7 @@ CC		= clang++
 all: 
 	@$(MAKE) $(NAME) --no-print-directory
 
-$(NAME):
+$(NAME): $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
 
 clean:

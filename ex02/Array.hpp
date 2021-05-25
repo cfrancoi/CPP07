@@ -10,26 +10,41 @@ private:
 	T *				_lst;
 	unsigned int	_size;
 public:
-	Array() : _lst(0), _size(0) {}
+	Array() : _lst(NULL), _size(0) {}
 
-	Array(Array<T> const & ref){ *this = ref; }
+	Array(Array<T> & ref) : _lst(NULL), _size(0) { *this = ref; }
 
-	Array(unsigned int n) : _size(n)
-	{
-		_lst = new T[_size];
-		
-	}
+	Array(unsigned int n) : _size(n) { _lst = new T[_size]; }
 
 	~Array()
 	{
 		if (_size != 0)
 			delete [] _lst;
 	}
-
-	Array<T>	operator=(Array<T> const & ref)
+	
+	T&			operator[](unsigned int index)
 	{
-		_size = ref._size;
+		if (index >= _size)
+		{
+			throw(Array<T>::OutOfRange());
+		}
+		return (_lst[index]);
+	}
 
+	T&			operator[](unsigned int index) const
+	{
+		if (index >= _size)
+		{
+			throw(Array<T>::OutOfRange());
+		}
+		return (_lst[index]);
+	}
+
+	Array<T> &	operator=(Array<T> const & ref)
+	{
+		if (_lst != NULL)
+			delete [] _lst;
+		_size = ref._size;
 		_lst = new T[_size]();
 
 		unsigned int i;
@@ -37,7 +52,7 @@ public:
 		i = 0;
 		while (i < _size)
 		{
-			*this[i] = ref[i];
+			(*this)[i] = ref[i];
 			i++;
 		}
 		return *this;
@@ -51,18 +66,6 @@ public:
             return ("Index out of range");
         }
 	};
-
-	T&			operator[](unsigned int index)
-	{
-		if (index >= _size)
-		{
-			throw(Array<T>::OutOfRange());
-		}
-		return (_lst[index]);
-	}
-
-
-
-
+	unsigned int	size(void) const { return _size; };
 };
 
